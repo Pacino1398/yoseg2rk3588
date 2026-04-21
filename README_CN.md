@@ -27,6 +27,7 @@
 ├─yolo/                 # vendored YOLOv5 代码
 ├─requirements.txt
 ├─requirements-rk3588.txt
+├─README.md
 └─README_CN.md
 ```
 
@@ -322,7 +323,7 @@ python tools/export_rknn.py \
 1. `realtime_pathplan.py` 现在支持 `--backend auto|onnx|rknn`。
 2. 真正需要导出成 `.rknn` 的只有分割模型，不是 `realtime_pathplan.py` 本身。
 3. 推荐最终交付物是一个 `.rknn` 文件加现有 `app/` Python 代码。
-4. 若仅后台运行（无图形界面），不要加 `--view`，并使用 `opencv-python-headless`。
+4. 若仅后台运行（无图形界面），不要加 `--display local` 或 `--display both`，推荐 `--display remote` 或 `--display none`。
 5. 若要调试精度，先在开发机上用同一份 `.onnx` 跑通 ONNX 链路，再切到 `.rknn` 对比。
 6. 板端运行需要 `rknn-toolkit-lite2`；导出 `.rknn` 需要 `rknn-toolkit2`。
 
@@ -334,6 +335,13 @@ python tools/export_rknn.py \
 
 ```bash
 pip install opencv-python-headless
+```
+
+如果需要本机窗口：
+
+```bash
+pip uninstall -y opencv-python-headless
+pip install opencv-python
 ```
 
 ### 8.2 `ONNX realtime 推理需要先安装 onnxruntime`

@@ -15,38 +15,64 @@
 # 4) 安装 RKNN 板端运行时：
 #    pip install rknn-toolkit-lite2
 #
-# 5) 需要放到板端的文件：
+# 5) 如果需要本机窗口显示：
+#    pip uninstall -y opencv-python-headless
+#    pip install opencv-python
+#
+# 6) 需要放到板端的文件：
 #    - app/
 #    - data/my.yaml
 #    - weights/0414_qy++.rknn
 #    - yolo/
 #
-# 6) 先用本地图片/视频验证：
+# 7) 先用本地图片/视频验证：
 #    python app/planning/realtime_pathplan.py \
 #      --source ./test_input/demo.mp4 \
 #      --weights ./weights/0414_qy++.rknn \
 #      --backend rknn \
 #      --data ./data/my.yaml
 #
-# 7) 接摄像头实时运行：
+# 8) 接摄像头本机显示：
 #    python app/planning/realtime_pathplan.py \
 #      --source 0 \
 #      --weights ./weights/0414_qy++.rknn \
 #      --backend rknn \
 #      --data ./data/my.yaml \
-#      --view
+#      --display local
 #
-# 8) 接 RTSP 流：
+# 9) 接摄像头上位机 MJPEG：
+#    python app/planning/realtime_pathplan.py \
+#      --source 0 \
+#      --weights ./weights/0414_qy++.rknn \
+#      --backend rknn \
+#      --data ./data/my.yaml \
+#      --display remote \
+#      --remote-port 8080
+#
+#    浏览器打开：
+#    http://<board-ip>:8080/stream.mjpg
+#
+# 10) 本机和上位机同时显示：
+#    python app/planning/realtime_pathplan.py \
+#      --source 0 \
+#      --weights ./weights/0414_qy++.rknn \
+#      --backend rknn \
+#      --data ./data/my.yaml \
+#      --display both \
+#      --remote-port 8080
+#
+# 11) 接 RTSP 流：
 #    python app/planning/realtime_pathplan.py \
 #      --source rtsp://xxx \
 #      --weights ./weights/0414_qy++.rknn \
 #      --backend rknn \
 #      --data ./data/my.yaml \
-#      --view
+#      --display remote
 #
-# 9) 说明：
-#    - 无桌面环境时不要加 --view
-#    - 若只后台运行，建议保留 opencv-python-headless
+# 12) 说明：
+#    - `--view` 仍可用，但仅作为 `--display local` 的兼容参数
+#    - 无桌面环境时不要用 `--display local` 或 `--display both`
+#    - 后台运行可用 `--display none` 或 `--display remote`
 #    - 该项目在板端是“RKNN 分割 + CPU 侧后处理/栅格化/D* Lite 路径规划”
 #
 # YOLOv5-style dependencies for RK3588 (CPU, headless preferred)

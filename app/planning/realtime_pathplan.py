@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import sys
 import threading
-import time
 from http import server
 from pathlib import Path
 from urllib.parse import urlparse
@@ -460,7 +459,7 @@ def run_realtime_pathplan(
     remote_server = MjpegStreamServer(remote_host, remote_port, normalized_remote_path) if enable_remote else None
     if remote_server is not None:
         remote_server.start()
-        print(f"MJPEG 预览地址: http://{remote_host if remote_host != '0.0.0.0' else '127.0.0.1'}:{remote_port}{normalized_remote_path}")
+        print(f"MJPEG 预览地址: http://<board-ip>:{remote_port}{normalized_remote_path}")
 
     try:
         if isinstance(source_value, Path):
