@@ -1,0 +1,12 @@
+nc: 10
+names:
+  0: deliver_point
+  1: car
+  2: cover
+  3: road_sign
+  4: tree
+  5: person
+  6: forest
+  7: road
+  8: road_base
+  9: house

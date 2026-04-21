@@ -1,0 +1,75 @@
+# RK3588 / 香橙派板端运行说明
+#
+# 1) 系统依赖：
+#    sudo apt update
+#    sudo apt install -y python3.10 python3.10-venv python3-pip ffmpeg libgl1 libglib2.0-0
+#
+# 2) 创建虚拟环境：
+#    python3.10 -m venv .venv
+#    source .venv/bin/activate
+#    python -m pip install -U pip setuptools wheel
+#
+# 3) 安装本文件依赖：
+#    pip install -r requirements-rk3588.txt
+#
+# 4) 安装 RKNN 板端运行时：
+#    pip install rknn-toolkit-lite2
+#
+# 5) 需要放到板端的文件：
+#    - app/
+#    - data/my.yaml
+#    - weights/0414_qy++.rknn
+#    - yolo/
+#
+# 6) 先用本地图片/视频验证：
+#    python app/planning/realtime_pathplan.py \
+#      --source ./test_input/demo.mp4 \
+#      --weights ./weights/0414_qy++.rknn \
+#      --backend rknn \
+#      --data ./data/my.yaml
+#
+# 7) 接摄像头实时运行：
+#    python app/planning/realtime_pathplan.py \
+#      --source 0 \
+#      --weights ./weights/0414_qy++.rknn \
+#      --backend rknn \
+#      --data ./data/my.yaml \
+#      --view
+#
+# 8) 接 RTSP 流：
+#    python app/planning/realtime_pathplan.py \
+#      --source rtsp://xxx \
+#      --weights ./weights/0414_qy++.rknn \
+#      --backend rknn \
+#      --data ./data/my.yaml \
+#      --view
+#
+# 9) 说明：
+#    - 无桌面环境时不要加 --view
+#    - 若只后台运行，建议保留 opencv-python-headless
+#    - 该项目在板端是“RKNN 分割 + CPU 侧后处理/栅格化/D* Lite 路径规划”
+#
+# YOLOv5-style dependencies for RK3588 (CPU, headless preferred)
+gitpython>=3.1.30
+ipython>=8.0.0
+matplotlib>=3.3.0
+numpy>=1.23.5,<3.0
+opencv-python-headless>=4.6.0
+pandas>=1.1.4
+Pillow>=10.0.0
+psutil
+PyYAML>=6.0
+requests>=2.23.0
+scipy>=1.4.1
+seaborn>=0.11.0
+tensorboard>=2.10.0
+thop>=0.1.1
+tqdm>=4.64.0
+onnx>=1.14.0
+onnxruntime>=1.16.0
+
+# 板端运行 realtime_pathplan.py --backend rknn 时额外安装:
+#   pip install rknn-toolkit-lite2
+#
+# 若需要导出 .rknn，请在 x86 Linux + rknn-toolkit2 环境执行，而不是在板端导出:
+#   python tools/export_rknn.py --onnx ./weights/0414_qy++.onnx --output ./weights/0414_qy++.rknn --target rk3588 --opset-check
